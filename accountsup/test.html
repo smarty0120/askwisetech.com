@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Get Base64 Chunks</title>
+</head>
+<body>
+  <img id="img" src="file:///C:/Users/asfin/.gemini/antigravity-ide/brain/c2c6cc0f-b257-40c9-99e0-f6d5a1420b73/media__1781503821200.png" style="max-width: 200px;">
+  <div id="chunks"></div>
+  <script>
+    var img = document.getElementById('img');
+    img.onload = function() {
+      try {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL('image/png');
+        
+        var chunksDiv = document.getElementById('chunks');
+        chunksDiv.innerHTML = '';
+        
+        var chunkSize = 1000;
+        var totalChunks = Math.ceil(dataURL.length / chunkSize);
+        
+        for (var i = 0; i < totalChunks; i++) {
+          var chunk = dataURL.slice(i * chunkSize, (i + 1) * chunkSize);
+          var textarea = document.createElement('textarea');
+          textarea.id = 'chunk-' + i;
+          textarea.style.width = '100%';
+          textarea.style.height = '80px';
+          textarea.value = chunk;
+          chunksDiv.appendChild(textarea);
+        }
+        console.log("Successfully split base64 into " + totalChunks + " chunks.");
+      } catch(e) {
+        document.body.innerHTML += "Error: " + e.message;
+      }
+    };
+    img.onerror = function() {
+      document.body.innerHTML += "Error loading image";
+    };
+  </script>
+</body>
+</html>
