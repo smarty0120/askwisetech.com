@@ -1,1 +1,0 @@
-# askwisetech.com
